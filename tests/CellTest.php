@@ -61,12 +61,9 @@ final class CellTest extends TestCase
      */
     public function all_cellule_on_grid_is_default_dead()
     {
-        $grid = new Grid();
+        $grid = new Grid([]);
 
-        $x = new Coordinate(5);
-        $y = new Coordinate(7);
-
-        $this->assertEquals(new DeadCell(), $grid->get($x, $y));
+        $this->assertEquals(new DeadCell(), $grid->get(5, 7));
     }
 
     /**
@@ -74,12 +71,12 @@ final class CellTest extends TestCase
      */
     public function a_grid_can_have_alive_cellule()
     {
-        $grid = new Grid();
+        $gridBuilder = new GridBuilder();
 
-        $aliveCell = new AliveCell();
-        $grid->add($aliveCell, new Coordinate(1), new Coordinate(1));
+        $gridBuilder->addAliveCell(1, 1);
+        $grid = $gridBuilder->build();
 
-        $this->assertEquals($aliveCell, $grid->get(new Coordinate(1), new Coordinate(1)));
+        $this->assertEquals(new AliveCell(), $grid->get(1, 1));
     }
 
     /**
@@ -87,13 +84,13 @@ final class CellTest extends TestCase
      */
     public function a_new_turn_on_grid_have_a_new_cells_state()
     {
-        $grid = new Grid();
+        $gridBuilder = new GridBuilder();
 
-        $aliveCell = new AliveCell();
-        $grid->add($aliveCell, new Coordinate(1), new Coordinate(1));
-        $grid->nextRound();
+        $gridBuilder->addAliveCell(1, 1);
+        $grid = $gridBuilder->build();
+        $grid = $grid->nextRound();
 
-        $this->assertEquals(new DeadCell(), $grid->get(new Coordinate(1), new Coordinate(1)));
+        $this->assertEquals(new DeadCell(), $grid->get(1,  1));
     }
 
     /**
@@ -101,18 +98,18 @@ final class CellTest extends TestCase
      */
     public function add_multiple_cell_on_grid()
     {
-        $grid = new Grid();
+        $gridBuilder = new GridBuilder();
 
-        $aliveCell = new AliveCell();
-        $grid->add($aliveCell, new Coordinate(1), new Coordinate(1));
-        $grid->add($aliveCell, new Coordinate(2), new Coordinate(1));
-        $grid->add($aliveCell, new Coordinate(1), new Coordinate(2));
-        $grid->add($aliveCell, new Coordinate(1), new Coordinate(3));
-        $grid->add($aliveCell, new Coordinate(1), new Coordinate(10));
-        $grid->nextRound();
+        $gridBuilder->addAliveCell(1, 1);
+        $gridBuilder->addAliveCell(1, 2);
+        $gridBuilder->addAliveCell(1, 3);
+        $gridBuilder->addAliveCell(1, 10);
+        $gridBuilder->addAliveCell(2, 1);
+        $grid = $gridBuilder->build();
+        $grid = $grid->nextRound();
 
-        $this->assertEquals(new AliveCell(), $grid->get(new Coordinate(1), new Coordinate(1)));
-        $this->assertEquals(new DeadCell(), $grid->get(new Coordinate(1), new Coordinate(10)));
+        $this->assertEquals(new AliveCell(), $grid->get(1, 1));
+        $this->assertEquals(new DeadCell(), $grid->get(1, 10));
     }
 
 }

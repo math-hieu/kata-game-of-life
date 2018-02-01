@@ -6,43 +6,46 @@ namespace GameOfLife;
 
 final class Grid
 {
-    private $grid = [[]];
+    private $grid;
 
-    public function get(Coordinate $x, Coordinate $y)
+    public function __construct(array $grid)
     {
-        if (!isset($this->grid[$x->getValue()][$y->getValue()])) {
+        $this->grid = $grid;
+    }
+
+    public function get(int $x, int $y)
+    {
+        if (!isset($this->grid[$x][$y])) {
             return new DeadCell();
         }
 
-        return $this->grid[$x->getValue()][$y->getValue()];
-    }
-
-    public function add(Cell $cell, Coordinate $x, Coordinate $y)
-    {
-        $this->grid[$x->getValue()][$y->getValue()] = $cell;
+        return $this->grid[$x][$y];
     }
 
     public function nextRound()
     {
+        $round = [[]];
         foreach ($this->grid as $x => $valueX) {
             foreach ($valueX as $y => $valueY) {
-                $this->grid[$x][$y] = $valueY->nextState($this->nbNeighborhood($x, $y));
+                $round[$x][$y] = $valueY->nextState($this->nbNeighborhood($x, $y));
             }
         }
+
+        return new self($round);
     }
 
     private function nbNeighborhood($x, $y)
     {
         $nbNeighborhood = 0;
         $neighborhood = [
-            $this->get(new Coordinate($x - 1), new Coordinate($y - 1)),
-            $this->get(new Coordinate($x - 1), new Coordinate($y)),
-            $this->get(new Coordinate($x - 1), new Coordinate($y + 1)),
-            $this->get(new Coordinate($x), new Coordinate($y - 1)),
-            $this->get(new Coordinate($x), new Coordinate($y + 1)),
-            $this->get(new Coordinate($x + 1), new Coordinate($y - 1)),
-            $this->get(new Coordinate($x + 1), new Coordinate($y)),
-            $this->get(new Coordinate($x + 1), new Coordinate($y + 1)),
+            $this->get($x - 1, $y - 1),
+            $this->get($x - 1, $y),
+            $this->get($x - 1, $y + 1),
+            $this->get($x, $y - 1),
+            $this->get($x, $y + 1),
+            $this->get($x + 1, $y - 1),
+            $this->get($x + 1, $y),
+            $this->get($x + 1, $y + 1),
         ];
 
         foreach ($neighborhood as $cell) {
