@@ -1,0 +1,22 @@
+{
+    "name": "evaneos/kata-game-of-life",
+    "type": "project",
+    "require": {
+        "phpunit/phpunit": "^6.5",
+        "symfony/var-dumper": "^4.0"
+    },
+    "authors": [
+        {
+            "name": "math-hieu",
+            "email": "mathieu.thomas@evaneos.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "GameOfLife\\": [
+                "src",
+                "tests"
+            ]
+        }
+    }	
+}
