@@ -13,7 +13,7 @@ final class CellTest extends TestCase
     {
         $cell = new AliveCell();
 
-        $this->assertEquals(new DeadCell(), $cell->NextState(1));
+        $this->assertEquals(new DeadCell(), $cell->NextState([new AliveCell()]));
     }
 
     /**
@@ -23,7 +23,7 @@ final class CellTest extends TestCase
     {
         $cell = new AliveCell();
 
-        $this->assertEquals(new DeadCell(), $cell->NextState(4));
+        $this->assertEquals(new DeadCell(), $cell->NextState([new AliveCell(), new AliveCell(), new AliveCell(), new AliveCell()]));
     }
 
     /**
@@ -33,7 +33,7 @@ final class CellTest extends TestCase
     {
         $cell = new DeadCell();
 
-        $this->assertEquals(new DeadCell(), $cell->NextState(2));
+        $this->assertEquals(new DeadCell(), $cell->NextState([new AliveCell(), new AliveCell()]));
     }
 
     /**
@@ -43,7 +43,7 @@ final class CellTest extends TestCase
     {
         $cell = new AliveCell();
 
-        $this->assertEquals(new AliveCell(), $cell->NextState(2));
+        $this->assertEquals(new AliveCell(), $cell->NextState([new AliveCell(), new AliveCell()]));
     }
 
     /**
@@ -53,7 +53,7 @@ final class CellTest extends TestCase
     {
         $cell = new DeadCell();
 
-        $this->assertEquals(new AliveCell(), $cell->NextState(3));
+        $this->assertEquals(new AliveCell(), $cell->NextState([new AliveCell(), new AliveCell(), new AliveCell()]));
     }
 
     /**
@@ -111,5 +111,6 @@ final class CellTest extends TestCase
         $this->assertEquals(new AliveCell(), $grid->get(1, 1));
         $this->assertEquals(new DeadCell(), $grid->get(1, 10));
     }
+    
 
 }

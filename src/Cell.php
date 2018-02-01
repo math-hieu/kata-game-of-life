@@ -4,12 +4,17 @@ namespace GameOfLife;
 
 abstract class Cell
 {
-    public function NextState(int $nbNeighborhood)
+    public function NextState(array $neighborhoods)
     {
-        if ($nbNeighborhood == 3) {
+        $aliveNeighborhoods = array_filter($neighborhoods, function($cell) {
+            return $cell->isAlive();
+        });
+
+        if (count($aliveNeighborhoods) == 3) {
             return new AliveCell();
         }
-        if ($nbNeighborhood == 2) {
+
+        if (count($aliveNeighborhoods) == 2) {
             return $this;
         }
 

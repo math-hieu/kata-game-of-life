@@ -27,17 +27,16 @@ final class Grid
         $round = [[]];
         foreach ($this->grid as $x => $valueX) {
             foreach ($valueX as $y => $valueY) {
-                $round[$x][$y] = $valueY->nextState($this->nbNeighborhood($x, $y));
+                $round[$x][$y] = $valueY->nextState($this->getNeighborhoods($x, $y));
             }
         }
 
         return new self($round);
     }
 
-    private function nbNeighborhood($x, $y)
+    private function getNeighborhoods($x, $y)
     {
-        $nbNeighborhood = 0;
-        $neighborhood = [
+        return [
             $this->get($x - 1, $y - 1),
             $this->get($x - 1, $y),
             $this->get($x - 1, $y + 1),
@@ -47,13 +46,5 @@ final class Grid
             $this->get($x + 1, $y),
             $this->get($x + 1, $y + 1),
         ];
-
-        foreach ($neighborhood as $cell) {
-            if ($cell->isAlive()) {
-                $nbNeighborhood++;
-            }
-        }
-
-        return $nbNeighborhood;
     }
 }
